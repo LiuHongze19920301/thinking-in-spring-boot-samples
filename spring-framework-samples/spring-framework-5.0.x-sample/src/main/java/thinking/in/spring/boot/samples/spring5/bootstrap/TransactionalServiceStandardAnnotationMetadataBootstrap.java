@@ -16,10 +16,6 @@
  */
 package thinking.in.spring.boot.samples.spring5.bootstrap;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.util.ClassUtils;
@@ -27,12 +23,8 @@ import org.springframework.util.CollectionUtils;
 import thinking.in.spring.boot.samples.spring5.annotation.TransactionalService;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,6 +50,25 @@ public class TransactionalServiceStandardAnnotationMetadataBootstrap {
 
         metaAnnotationTypes.forEach(metaAnnotation -> { // 读取所有元注解类型
             // 读取元注解属性信息
+            Map<String, Object> annotationAttributes = annotationMetadata.getAnnotationAttributes(metaAnnotation);
+            if (!CollectionUtils.isEmpty(annotationAttributes)) {
+                annotationAttributes.forEach((name, value) ->
+                        System.out.printf("注解 @%s 属性 %s = %s\n", ClassUtils.getShortName(metaAnnotation), name, value));
+            }
+        });
+
+        System.out.println("******************************");
+        main0();
+    }
+
+    private static void main0() {
+        AnnotationMetadata annotationMetadata = new StandardAnnotationMetadata(TransactionalServiceStandardAnnotationMetadataBootstrap.class);
+        Set<String> metaAnnotationTypes = annotationMetadata.getAnnotationTypes()
+                .stream()
+                .map(annotationMetadata::getMetaAnnotationTypes)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+        metaAnnotationTypes.forEach(metaAnnotation -> {
             Map<String, Object> annotationAttributes = annotationMetadata.getAnnotationAttributes(metaAnnotation);
             if (!CollectionUtils.isEmpty(annotationAttributes)) {
                 annotationAttributes.forEach((name, value) ->

@@ -18,6 +18,7 @@ package thinking.in.spring.boot.samples.spring5.bootstrap;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import thinking.in.spring.boot.samples.spring5.annotation.TransactionalService;
@@ -35,6 +36,8 @@ public class AnnotationAttributesBootstrap {
 
     public static void main(String[] args) {
 
+
+
 //        AnnotatedElement annotatedElement = TransactionalService.class;
 
         AnnotatedElement annotatedElement = TransactionalServiceBean.class;
@@ -47,13 +50,22 @@ public class AnnotationAttributesBootstrap {
         AnnotationAttributes transactionalAttributes =
                 AnnotatedElementUtils.getMergedAnnotationAttributes(annotatedElement, Transactional.class);
 
+        AnnotationAttributes transactionalAttributes1 =
+                AnnotatedElementUtils.getMergedAnnotationAttributes(annotatedElement, TransactionalService.class);
+
         // 输出
         print(serviceAttributes);
 
         print(transactionalAttributes);
+
+        print(transactionalAttributes1);
     }
 
     private static void print(AnnotationAttributes annotationAttributes) {
+
+        if (null == annotationAttributes) {
+            return;
+        }
 
         System.out.printf("注解 @%s 属性集合 : \n", annotationAttributes.annotationType().getName());
 

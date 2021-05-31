@@ -20,6 +20,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import thinking.in.spring.boot.samples.spring5.annotation.TransactionalService;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import java.util.Set;
  * @since 1.0.0
  */
 @TransactionalService
+@EnableTransactionManagement
 public class TransactionalServiceAnnotationMetadataBootstrap {
 
     public static void main(String[] args) throws IOException {

@@ -40,6 +40,7 @@ import java.lang.annotation.Target;
 @Documented
 @Transactional
 @Service(value = "transactionalService")
+@MyAnnoB("MyAnnoB")
 public @interface TransactionalService {
 
     /**
@@ -62,7 +63,7 @@ public @interface TransactionalService {
      * @return {@link PlatformTransactionManager} Bean 名称，默认关联 "txManager" Bean
      */
     @AliasFor(attribute = "transactionManager", annotation = Transactional.class)
-    String manager() default "txManager";
+    String manager() default "txManager11111111111";
 
 }
 

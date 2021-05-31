@@ -25,6 +25,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,6 +78,24 @@ public class TransactionalServiceAnnotationReflectionBootstrap {
         // 添加递归结果
         metaMetaAnnotationsSet.add(annotation);
         return metaMetaAnnotationsSet;
+    }
+
+    private static Set<Annotation> retrieveAllMetaAnnotations(Annotation annotation) {
+        if (Objects.isNull(annotation)) {
+            return Collections.emptySet();
+        }
+        Annotation[] annotations = annotation.annotationType().getAnnotations();
+        if (ObjectUtils.isEmpty(annotations)) {
+            return Collections.emptySet();
+        }
+        Set<Annotation> metaAnnotationSet = Stream.of(annotations)
+                .filter(metaAnnotation -> !Target.class.getPackage().equals(metaAnnotation.annotationType().getPackage()))
+                .collect(Collectors.toSet());
+        Set<Annotation> metaMetaAnnotationSet = metaAnnotationSet.stream()
+                .map(TransactionalServiceAnnotationReflectionBootstrap::retrieveAllMetaAnnotations)
+                .collect(HashSet::new, Set::addAll, Set::addAll);
+        metaMetaAnnotationSet.add(annotation);
+        return metaMetaAnnotationSet;
     }
 
 

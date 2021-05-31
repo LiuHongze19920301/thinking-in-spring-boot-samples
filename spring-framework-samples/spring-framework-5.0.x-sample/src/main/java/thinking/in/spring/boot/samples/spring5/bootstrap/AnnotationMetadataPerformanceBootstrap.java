@@ -18,6 +18,7 @@ package thinking.in.spring.boot.samples.spring5.bootstrap;
 
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.StandardAnnotationMetadata;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import thinking.in.spring.boot.samples.spring5.annotation.TransactionalService;
@@ -37,7 +38,9 @@ public class AnnotationMetadataPerformanceBootstrap {
         // 反射实现
         AnnotationMetadata standardAnnotationMetadata = new StandardAnnotationMetadata(TransactionalService.class);
 
-        SimpleMetadataReaderFactory factory = new SimpleMetadataReaderFactory();
+//        SimpleMetadataReaderFactory factory = new SimpleMetadataReaderFactory();
+
+        CachingMetadataReaderFactory factory = new CachingMetadataReaderFactory();
 
         MetadataReader metadataReader = factory.getMetadataReader(TransactionalService.class.getName());
         // ASM 实现
